@@ -45,7 +45,7 @@ def _status_whatsapp_cache(ttl_marker):
 
 def render(refresh_rate: int):
     st.title("Visão Geral")
-    st.caption("Monitoramento do ambiente de ferramentas - Service Desk")
+    st.caption("Monitoramento do ambiente e ferramentas - Service Desk")
 
     # o refresh_rate entra como parte da "chave" do cache: quando o
     # usuário muda o slider, o cache é invalidado e busca de novo.
