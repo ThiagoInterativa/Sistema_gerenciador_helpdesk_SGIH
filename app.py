@@ -98,7 +98,7 @@ with st.sidebar:
         if st.session_state.sidebar_expandida:
             st.markdown('<p class="sgih-title">SGIH</p>', unsafe_allow_html=True)
             st.markdown(
-                '<p class="sgih-subtitle">Sistema de Gestão Inteligente de Helpdesk</p>',
+                '<p class="sgih-subtitle">Sistema de Gestão Inteligente de ServiceDesk</p>',
                 unsafe_allow_html=True,
             )
     with col_toggle:
