@@ -13,7 +13,7 @@ import streamlit as st
 # - nome
 # - descricao
 # - icone
-# - url
+# - urlf
 # - favorito
 #
 # categoria:
@@ -37,8 +37,8 @@ LINKS = [
 
     {
         "categoria": "Planilhas",
-        "nome": "Controle de Atendimentos",
-        "descricao": "Controle de desempenho.",
+        "nome": "Controle de desempenho",
+        "descricao": "Acompanhamento de indicador por Tecnico",
         "icone": "📊",
         "url": "https://docs.google.com/spreadsheets/d/1Bu53-IPht9-Z4bn1bfXXMBHVeM2sOTQ_NQ3YjyUBF94/edit?gid=1048802781#gid=1048802781",
         "tipo_botao": "Abrir planilha ↗",
