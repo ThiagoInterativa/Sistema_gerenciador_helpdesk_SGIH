@@ -23,10 +23,10 @@ LINKS = [
 
     {
         "categoria": "Planilhas",
-        "nome": "Escala",
+        "nome": "Ocorrências",
         "descricao": "Planilha de escala da equipe.",
         "icone": "📅",
-        "url": "COLOQUE_AQUI_A_URL",
+        "url": "https://docs.google.com/spreadsheets/d/14GuZyNnFwCKFoMg6ZE0j7eojFNK4QBFvImgc-mT2e1o/edit?gid=2108239952#gid=2108239952",
         "tipo_botao": "Abrir planilha ↗",
         "favorito": False,
     },
