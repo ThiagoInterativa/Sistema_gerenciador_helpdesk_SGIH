@@ -1,65 +1,60 @@
 import streamlit as st
 
 
+# ==========================================================
+# FUNÇÃO PRINCIPAL
+# ==========================================================
+
 def render():
 
     # ==========================================================
-    # CSS DOS CARDS
+    # CSS
+    # ==========================================================
+    #
+    # Aqui alteramos somente a aparência dos componentes.
+    #
+    # IMPORTANTE:
+    # Não estamos colocando HTML dos cards aqui.
+    # Os textos serão criados usando st.markdown(),
+    # st.caption() e st.link_button().
     # ==========================================================
 
     st.markdown("""
     <style>
 
-    /* --------------------------------------------------------
-       CARD DOS LINKS
-       -------------------------------------------------------- */
+    /* ======================================================
+       TÍTULO DOS CARDS
+       ====================================================== */
 
-    .link-card {
-        background-color: #111827;
-        border: 1px solid #263244;
-        border-radius: 10px;
-        padding: 18px;
-        height: 210px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
-
-
-    /* --------------------------------------------------------
-       TÍTULO DO CARD
-       Todos terão a mesma altura.
-       -------------------------------------------------------- */
-
-    .link-title {
-        color: #ffffff;
+    .link-titulo {
+        height: 55px;
+        display: flex;
+        align-items: flex-start;
         font-size: 18px;
         font-weight: 600;
-        height: 50px;
-        line-height: 25px;
-        margin-bottom: 5px;
+        color: #ffffff;
+        line-height: 24px;
     }
 
 
-    /* --------------------------------------------------------
-       DESCRIÇÃO
-       Todos terão a mesma altura.
-       -------------------------------------------------------- */
+    /* ======================================================
+       DESCRIÇÃO DOS CARDS
+       ====================================================== */
 
-    .link-description {
+    .link-descricao {
+        height: 55px;
         color: #9ca3af;
         font-size: 13px;
-        line-height: 20px;
-        height: 60px;
-        margin-bottom: 12px;
+        line-height: 19px;
     }
 
 
-    /* --------------------------------------------------------
-       BOTÃO
-       -------------------------------------------------------- */
+    /* ======================================================
+       ESPAÇAMENTO DOS BOTÕES
+       ====================================================== */
 
-    .link-button {
-        width: 100%;
+    div.stLinkButton {
+        margin-top: 5px;
     }
 
     </style>
@@ -67,33 +62,64 @@ def render():
 
 
     # ==========================================================
+    # TÍTULO DA PÁGINA
+    # ==========================================================
+
+    st.title("📑 Links úteis")
+
+    st.caption(
+        "Acesso rápido às ferramentas utilizadas pelo ServiceDesk."
+    )
+
+
+    # ==========================================================
+    # ==========================================================
     # PLANILHAS
+    # ==========================================================
     # ==========================================================
 
     st.subheader("📊 Planilhas")
+
+
+    # ----------------------------------------------------------
+    # CRIA AS 3 COLUNAS
+    # ----------------------------------------------------------
 
     col1, col2, col3 = st.columns(3)
 
 
     # ==========================================================
     # COLUNA 1
+    # CONTROLE DE ATENDIMENTOS
     # ==========================================================
 
     with col1:
 
-        st.markdown("""
-        <div class="link-card">
+        # ------------------------------------------------------
+        # TÍTULO
+        # ------------------------------------------------------
 
-            <div class="link-title">
-                📊 Controle de Atendimentos
-            </div>
+        st.markdown(
+            '<div class="link-titulo">'
+            '📊 Controle de Atendimentos'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-            <div class="link-description">
-                Acompanhamento dos atendimentos do ServiceDesk.
-            </div>
+        # ------------------------------------------------------
+        # DESCRIÇÃO
+        # ------------------------------------------------------
 
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="link-descricao">'
+            'Acompanhamento dos atendimentos do ServiceDesk.'
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+        # ------------------------------------------------------
+        # BOTÃO
+        # ------------------------------------------------------
 
         st.link_button(
             "Abrir planilha ↗",
@@ -104,23 +130,24 @@ def render():
 
     # ==========================================================
     # COLUNA 2
+    # ESCALA
     # ==========================================================
 
     with col2:
 
-        st.markdown("""
-        <div class="link-card">
+        st.markdown(
+            '<div class="link-titulo">'
+            '📊 Escala'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-            <div class="link-title">
-                📊 Escala
-            </div>
-
-            <div class="link-description">
-                Planilha de escala da equipe.
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="link-descricao">'
+            'Planilha de escala da equipe.'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
         st.link_button(
             "Abrir planilha ↗",
@@ -131,23 +158,24 @@ def render():
 
     # ==========================================================
     # COLUNA 3
+    # INDICADORES
     # ==========================================================
 
     with col3:
 
-        st.markdown("""
-        <div class="link-card">
+        st.markdown(
+            '<div class="link-titulo">'
+            '📊 Indicadores'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-            <div class="link-title">
-                📊 Indicadores
-            </div>
-
-            <div class="link-description">
-                Indicadores e acompanhamento.
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="link-descricao">'
+            'Indicadores e acompanhamento.'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
         st.link_button(
             "Abrir planilha ↗",
@@ -157,35 +185,48 @@ def render():
 
 
     # ==========================================================
-    # FORMULÁRIOS
+    # SEPARADOR
     # ==========================================================
 
     st.divider()
 
+
+    # ==========================================================
+    # ==========================================================
+    # FORMULÁRIOS
+    # ==========================================================
+    # ==========================================================
+
     st.subheader("📝 Formulários")
+
+
+    # ----------------------------------------------------------
+    # CRIA NOVAMENTE 3 COLUNAS
+    # ----------------------------------------------------------
 
     col1, col2, col3 = st.columns(3)
 
 
     # ==========================================================
-    # FORMULÁRIO 1
+    # COLUNA 1
+    # SOLICITAÇÃO
     # ==========================================================
 
     with col1:
 
-        st.markdown("""
-        <div class="link-card">
+        st.markdown(
+            '<div class="link-titulo">'
+            '📝 Solicitação'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-            <div class="link-title">
-                📝 Solicitação
-            </div>
-
-            <div class="link-description">
-                Formulário para abertura de solicitações.
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="link-descricao">'
+            'Formulário para abertura de solicitações.'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
         st.link_button(
             "Abrir formulário ↗",
@@ -195,24 +236,25 @@ def render():
 
 
     # ==========================================================
-    # FORMULÁRIO 2
+    # COLUNA 2
+    # ATENDIMENTO
     # ==========================================================
 
     with col2:
 
-        st.markdown("""
-        <div class="link-card">
+        st.markdown(
+            '<div class="link-titulo">'
+            '📝 Atendimento'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-            <div class="link-title">
-                📝 Atendimento
-            </div>
-
-            <div class="link-description">
-                Formulário de registro de atendimento.
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="link-descricao">'
+            'Formulário de registro de atendimento.'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
         st.link_button(
             "Abrir formulário ↗",
@@ -222,24 +264,25 @@ def render():
 
 
     # ==========================================================
-    # FORMULÁRIO 3
+    # COLUNA 3
+    # PESQUISA
     # ==========================================================
 
     with col3:
 
-        st.markdown("""
-        <div class="link-card">
+        st.markdown(
+            '<div class="link-titulo">'
+            '📝 Pesquisa'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
-            <div class="link-title">
-                📝 Pesquisa
-            </div>
-
-            <div class="link-description">
-                Pesquisa de satisfação.
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="link-descricao">'
+            'Pesquisa de satisfação.'
+            '</div>',
+            unsafe_allow_html=True
+        )
 
         st.link_button(
             "Abrir formulário ↗",
