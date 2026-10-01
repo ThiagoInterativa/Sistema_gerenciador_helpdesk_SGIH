@@ -4,30 +4,6 @@ import streamlit as st
 # ==========================================================
 # CONFIGURAÇÃO DOS LINKS
 # ==========================================================
-#
-# Aqui você cadastra os links do seu sistema.
-#
-# Para adicionar um novo link, basta copiar um dos blocos
-# e alterar:
-#
-# - nome
-# - descricao
-# - icone
-# - urlf
-# - favorito
-#
-# categoria:
-#   "Planilhas"
-#   "Formulários"
-#   "Sistemas"
-#   "Documentação"
-#
-# favorito:
-#   True  = aparece em "⭐ Favoritos"
-#   False = não aparece nos favoritos
-#
-# ==========================================================
-
 
 LINKS = [
 
@@ -154,49 +130,20 @@ LINKS = [
 
 
 # ==========================================================
-# FUNÇÃO PARA NORMALIZAR TEXTO
-# ==========================================================
-#
-# Usada pela busca.
-#
-# Exemplo:
-#
-# "Controle de Atendimentos"
-#
-# pode ser encontrado digitando:
-#
-# "controle"
-# "atendimento"
-# "ATENDIMENTO"
-#
+# NORMALIZAR TEXTO
 # ==========================================================
 
 def normalizar(texto):
-
     return texto.lower().strip()
 
 
 # ==========================================================
-# FUNÇÃO PARA MOSTRAR UM LINK
-# ==========================================================
-#
-# Essa função cria:
-#
-# 📊 Nome
-#
-# Descrição
-#
-# [ Abrir ↗ ]
-#
-# Mantendo o tamanho dos textos alinhado.
+# MOSTRAR UM LINK
 # ==========================================================
 
-def mostrar_link(link, indice):
+def mostrar_link(link):
 
-    # ------------------------------------------------------
-    # TÍTULO
-    # ------------------------------------------------------
-
+    # Título
     st.markdown(
         f"""
         <div class="link-titulo">
@@ -206,11 +153,7 @@ def mostrar_link(link, indice):
         unsafe_allow_html=True
     )
 
-
-    # ------------------------------------------------------
-    # DESCRIÇÃO
-    # ------------------------------------------------------
-
+    # Descrição
     st.markdown(
         f"""
         <div class="link-descricao">
@@ -220,11 +163,7 @@ def mostrar_link(link, indice):
         unsafe_allow_html=True
     )
 
-
-    # ------------------------------------------------------
-    # BOTÃO
-    # ------------------------------------------------------
-
+    # Botão
     st.link_button(
         link["tipo_botao"],
         link["url"],
@@ -233,11 +172,27 @@ def mostrar_link(link, indice):
 
 
 # ==========================================================
+# MOSTRAR VÁRIOS LINKS EM 3 COLUNAS
+# ==========================================================
+
+def mostrar_links_em_colunas(lista_links):
+
+    colunas = st.columns(3)
+
+    for indice, link in enumerate(lista_links):
+
+        coluna = colunas[indice % 3]
+
+        with coluna:
+
+            mostrar_link(link)
+
+
+# ==========================================================
 # FUNÇÃO PRINCIPAL
 # ==========================================================
 
 def render():
-
 
     # ======================================================
     # CSS
@@ -246,10 +201,6 @@ def render():
     st.markdown(
         """
         <style>
-
-        /* ==================================================
-           TÍTULO DOS LINKS
-           ================================================== */
 
         .link-titulo {
 
@@ -270,10 +221,6 @@ def render():
         }
 
 
-        /* ==================================================
-           DESCRIÇÃO DOS LINKS
-           ================================================== */
-
         .link-descricao {
 
             height: 55px;
@@ -287,10 +234,6 @@ def render():
         }
 
 
-        /* ==================================================
-           ESPAÇAMENTO ENTRE OS BOTÕES
-           ================================================== */
-
         div.stLinkButton {
 
             margin-top: 5px;
@@ -303,99 +246,61 @@ def render():
     )
 
 
-
     # ======================================================
-    # CAMPO DE BUSCA
-    # ======================================================
-    #
-    # O usuário pode pesquisar:
-    #
-    # Controle
-    # Kanban
-    # Escala
-    # Chamados
-    # etc.
-    #
+    # BUSCA
     # ======================================================
 
     busca = st.text_input(
         "🔎 Pesquisar links",
-        placeholder="Digite o nome do link, sistema, planilha ou formulário...",
+        placeholder=(
+            "Digite o nome do link, sistema, "
+            "planilha ou formulário..."
+        ),
         key="busca_links"
     )
 
 
     # ======================================================
-    # FILTRAR LINKS
+    # SE EXISTE BUSCA
     # ======================================================
 
     if busca:
 
         termo = normalizar(busca)
 
-        links_filtrados = [
+        links_filtrados = []
 
-            link
+        for link in LINKS:
 
-            for link in LINKS
+            nome = normalizar(link["nome"])
+            descricao = normalizar(link["descricao"])
+            categoria = normalizar(link["categoria"])
 
             if (
-                termo in normalizar(link["nome"])
-                or termo in normalizar(link["descricao"])
-                or termo in normalizar(link["categoria"])
+                termo in nome
+                or termo in descricao
+                or termo in categoria
+            ):
+
+                links_filtrados.append(link)
+
+
+        # --------------------------------------------------
+        # NENHUM RESULTADO
+        # --------------------------------------------------
+
+        if not links_filtrados:
+
+            st.warning(
+                f'Nenhum link encontrado para "{busca}".'
             )
 
-        ]
-
-    else:
-
-        links_filtrados = LINKS
-        # --------------------------------------------------
-        # QUANTIDADE DE COLUNAS
-        # --------------------------------------------------
-
-        colunas_favoritos = st.columns(3)
+            return
 
 
         # --------------------------------------------------
-        # MOSTRA FAVORITOS
+        # RESULTADOS
         # --------------------------------------------------
-
-        for indice, link in enumerate(favoritos):
-
-            coluna = colunas_favoritos[
-                indice % 3
-            ]
-
-            with coluna:
-
-                mostrar_link(
-                    link,
-                    f"favorito_{indice}"
-                )
-
-
-        st.divider()
-
-
-    # ======================================================
-    # CASO A BUSCA NÃO ENCONTRE NADA
-    # ======================================================
-
-    if busca and not links_filtrados:
-
-        st.warning(
-            f'Nenhum link encontrado para "{busca}".'
-        )
-
-        return
-
-
-    # ======================================================
-    # MOSTRAR RESULTADO DA BUSCA
-    # ======================================================
-
-    if busca:
 
         st.subheader("🔎 Resultados")
 
@@ -403,192 +308,150 @@ def render():
             f"{len(links_filtrados)} link(s) encontrado(s)."
         )
 
-
-        # --------------------------------------------------
-        # RESULTADOS EM 3 COLUNAS
-        # --------------------------------------------------
-
-        colunas = st.columns(3)
-
-
-        for indice, link in enumerate(
+        mostrar_links_em_colunas(
             links_filtrados
-        ):
-
-            coluna = colunas[
-                indice % 3
-            ]
-
-            with coluna:
-
-                mostrar_link(
-                    link,
-                    f"busca_{indice}"
-                )
-
+        )
 
         return
 
-st.divider()
+
+    # ======================================================
+    # FAVORITOS
+    # ======================================================
+
+    favoritos = []
+
+    for link in LINKS:
+
+        if link["favorito"] is True:
+
+            favoritos.append(link)
+
+
+    if favoritos:
+
+        st.subheader("⭐ Favoritos")
+
+        st.caption(
+            "Links mais utilizados no dia a dia."
+        )
+
+        mostrar_links_em_colunas(
+            favoritos
+        )
+
+
+    # ======================================================
+    # SEPARADOR
+    # ======================================================
+
+    st.divider()
 
 
     # ======================================================
     # PLANILHAS
     # ======================================================
 
-    planilhas = [
+    planilhas = []
 
-        link
+    for link in LINKS:
 
-        for link in LINKS
+        if link["categoria"] == "Planilhas":
 
-        if link["categoria"] == "Planilhas"
-
-    ]
+            planilhas.append(link)
 
 
     if planilhas:
 
         st.subheader("📊 Planilhas")
 
-
-        colunas = st.columns(3)
-
-
-        for indice, link in enumerate(
+        mostrar_links_em_colunas(
             planilhas
-        ):
+        )
 
-            coluna = colunas[
-                indice % 3
-            ]
 
-            with coluna:
+    # ======================================================
+    # SEPARADOR
+    # ======================================================
 
-                mostrar_link(
-                    link,
-                    f"planilha_{indice}"
-                )
+    st.divider()
 
 
     # ======================================================
     # FORMULÁRIOS
     # ======================================================
 
-    formularios = [
+    formularios = []
 
-        link
+    for link in LINKS:
 
-        for link in LINKS
+        if link["categoria"] == "Formulários":
 
-        if link["categoria"] == "Formulários"
-
-    ]
+            formularios.append(link)
 
 
     if formularios:
 
-        st.divider()
-
         st.subheader("📝 Formulários")
 
-
-        colunas = st.columns(3)
-
-
-        for indice, link in enumerate(
+        mostrar_links_em_colunas(
             formularios
-        ):
+        )
 
-            coluna = colunas[
-                indice % 3
-            ]
 
-            with coluna:
+    # ======================================================
+    # SEPARADOR
+    # ======================================================
 
-                mostrar_link(
-                    link,
-                    f"formulario_{indice}"
-                )
+    st.divider()
 
 
     # ======================================================
     # SISTEMAS
     # ======================================================
 
-    sistemas = [
+    sistemas = []
 
-        link
+    for link in LINKS:
 
-        for link in LINKS
+        if link["categoria"] == "Sistemas":
 
-        if link["categoria"] == "Sistemas"
-
-    ]
+            sistemas.append(link)
 
 
     if sistemas:
 
-        st.divider()
-
         st.subheader("🌐 Sistemas")
 
-
-        colunas = st.columns(3)
-
-
-        for indice, link in enumerate(
+        mostrar_links_em_colunas(
             sistemas
-        ):
+        )
 
-            coluna = colunas[
-                indice % 3
-            ]
 
-            with coluna:
+    # ======================================================
+    # SEPARADOR
+    # ======================================================
 
-                mostrar_link(
-                    link,
-                    f"sistema_{indice}"
-                )
+    st.divider()
 
 
     # ======================================================
     # DOCUMENTAÇÃO
     # ======================================================
 
-    documentacao = [
+    documentacao = []
 
-        link
+    for link in LINKS:
 
-        for link in LINKS
+        if link["categoria"] == "Documentação":
 
-        if link["categoria"] == "Documentação"
-
-    ]
+            documentacao.append(link)
 
 
     if documentacao:
 
-        st.divider()
-
         st.subheader("📚 Documentação")
 
-
-        colunas = st.columns(3)
-
-
-        for indice, link in enumerate(
+        mostrar_links_em_colunas(
             documentacao
-        ):
-
-            coluna = colunas[
-                indice % 3
-            ]
-
-            with coluna:
-
-                mostrar_link(
-                    link,
-                    f"documentacao_{indice}"
-                )
+        )
