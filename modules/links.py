@@ -218,11 +218,11 @@ def render():
             unsafe_allow_html=True
         )
 
-      st.link_button(
-        "Abrir formulário ↗",
-        "https://form.jotform.com/230283726737663",
-        use_container_width=True
-    )
+        st.link_button(
+            "Abrir formulário ↗",
+            "https://form.jotform.com/230283726737663",
+            use_container_width=True
+        )
 
 
     # ==========================================================
