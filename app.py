@@ -135,23 +135,15 @@ with st.sidebar:
 
     st.divider()
 
-label_visao = "🏠 Visão Geral" if st.session_state.sidebar_expandida else "🏠"
-label_chamadas = "📞 Chamadas" if st.session_state.sidebar_expandida else "📞"
-label_relatorios = "📈 Relatórios" if st.session_state.sidebar_expandida else "📈"
-label_links = "📑 Links úteis" if st.session_state.sidebar_expandida else "📑"
+    label_visao = "🏠 Visão Geral" if st.session_state.sidebar_expandida else "🏠"
+    label_chamadas = "📞 Chamadas" if st.session_state.sidebar_expandida else "📞"
 
+    if st.button(label_visao, use_container_width=True, key="menu_visao"):
+        ir_para("visao_geral")
 
-if st.button(label_visao, use_container_width=True, key="menu_visao"):
-    ir_para("visao_geral")
+    if st.button(label_chamadas, use_container_width=True, key="menu_chamadas"):
+        ir_para("chamadas")
 
-if st.button(label_chamadas, use_container_width=True, key="menu_chamadas"):
-    ir_para("chamadas")
-
-if st.button(label_relatorios, use_container_width=True, key="menu_relatorios"):
-    ir_para("relatorio")
-
-if st.button(label_links, use_container_width=True, key="menu_links"):
-    ir_para("links")
 
 # ==========================================================
 # ROTEADOR PRINCIPAL
