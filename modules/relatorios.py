@@ -7,7 +7,7 @@ def render():
     # TÍTULO
     # ==========================================================
 
-    st.title("📈 Relatórios")
+ 
 
     st.caption(
         "Selecione um relatório para visualizar"
