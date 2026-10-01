@@ -137,6 +137,9 @@ with st.sidebar:
 
     label_visao = "🏠 Visão Geral" if st.session_state.sidebar_expandida else "🏠"
     label_chamadas = "📞 Chamadas" if st.session_state.sidebar_expandida else "📞"
+    label_visao = "📈 Relatórios" if st.session_state.sidebar_expandida else "🏠"
+    label_visao = "📑 Links uteis" if st.session_state.sidebar_expandida else "🏠"
+
 
     if st.button(label_visao, use_container_width=True, key="menu_visao"):
         ir_para("visao_geral")
