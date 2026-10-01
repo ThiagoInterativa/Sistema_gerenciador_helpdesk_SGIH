@@ -38,7 +38,7 @@ LINKS = [
     {
         "categoria": "Planilhas",
         "nome": "Controle de Atendimentos",
-        "descricao": "Acompanhamento dos atendimentos do ServiceDesk.",
+        "descricao": "Controle de desempenho.",
         "icone": "📊",
         "url": "https://docs.google.com/spreadsheets/d/1Bu53-IPht9-Z4bn1bfXXMBHVeM2sOTQ_NQ3YjyUBF94/edit?gid=1048802781#gid=1048802781",
         "tipo_botao": "Abrir planilha ↗",
