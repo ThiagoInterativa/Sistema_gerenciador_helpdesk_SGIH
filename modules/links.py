@@ -315,31 +315,6 @@ def render():
         return
 
 
-    # ======================================================
-    # FAVORITOS
-    # ======================================================
-
-    favoritos = []
-
-    for link in LINKS:
-
-        if link["favorito"] is True:
-
-            favoritos.append(link)
-
-
-    if favoritos:
-
-        st.subheader("⭐ Favoritos")
-
-        st.caption(
-            "Links mais utilizados no dia a dia."
-        )
-
-        mostrar_links_em_colunas(
-            favoritos
-        )
-
 
     # ======================================================
     # SEPARADOR
