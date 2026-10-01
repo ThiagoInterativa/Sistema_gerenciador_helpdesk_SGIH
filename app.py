@@ -147,6 +147,11 @@ with st.sidebar:
     if st.button(label_chamadas, use_container_width=True, key="menu_chamadas"):
         ir_para("chamadas")
 
+if st.button(label_chamadas, use_container_width=True, key="menu_chamadas"):
+        ir_para("relatorios")
+
+if st.button(label_chamadas, use_container_width=True, key="menu_chamadas"):
+        ir_para("links")
 
 # ==========================================================
 # ROTEADOR PRINCIPAL
