@@ -568,7 +568,7 @@ elif st.session_state.menu == "relatorios":
     st.title("📈 Relatórios")
 
     st.caption(
-        "Área de relatórios do sistema"
+        "Área de relatórios do sistema - Selecione um relatório para visualizar"
     )
 
     # ------------------------------------------------------
