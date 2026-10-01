@@ -2,280 +2,634 @@ import streamlit as st
 
 
 # ==========================================================
+# CONFIGURAÇÃO DOS LINKS
+# ==========================================================
+#
+# Aqui você cadastra os links do seu sistema.
+#
+# Para adicionar um novo link, basta copiar um dos blocos
+# e alterar:
+#
+# - nome
+# - descricao
+# - icone
+# - url
+# - favorito
+#
+# categoria:
+#   "Planilhas"
+#   "Formulários"
+#   "Sistemas"
+#   "Documentação"
+#
+# favorito:
+#   True  = aparece em "⭐ Favoritos"
+#   False = não aparece nos favoritos
+#
+# ==========================================================
+
+
+LINKS = [
+
+    # ======================================================
+    # PLANILHAS
+    # ======================================================
+
+    {
+        "categoria": "Planilhas",
+        "nome": "Controle de Atendimentos",
+        "descricao": "Acompanhamento dos atendimentos do ServiceDesk.",
+        "icone": "📊",
+        "url": "https://docs.google.com/spreadsheets/d/1Bu53-IPht9-Z4bn1bfXXMBHVeM2sOTQ_NQ3YjyUBF94/edit?gid=1048802781#gid=1048802781",
+        "tipo_botao": "Abrir planilha ↗",
+        "favorito": True,
+    },
+
+    {
+        "categoria": "Planilhas",
+        "nome": "Escala",
+        "descricao": "Planilha de escala da equipe.",
+        "icone": "📅",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir planilha ↗",
+        "favorito": False,
+    },
+
+    {
+        "categoria": "Planilhas",
+        "nome": "Indicadores",
+        "descricao": "Indicadores e acompanhamento.",
+        "icone": "📈",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir planilha ↗",
+        "favorito": False,
+    },
+
+
+    # ======================================================
+    # FORMULÁRIOS
+    # ======================================================
+
+    {
+        "categoria": "Formulários",
+        "nome": "Formulário Kanban",
+        "descricao": "Formulário para atualização do Kanban.",
+        "icone": "📝",
+        "url": "https://form.jotform.com/230283726737663",
+        "tipo_botao": "Abrir formulário ↗",
+        "favorito": True,
+    },
+
+    {
+        "categoria": "Formulários",
+        "nome": "Solicitação",
+        "descricao": "Formulário para abertura de solicitações.",
+        "icone": "📝",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir formulário ↗",
+        "favorito": False,
+    },
+
+    {
+        "categoria": "Formulários",
+        "nome": "Atendimento",
+        "descricao": "Formulário de registro de atendimento.",
+        "icone": "📝",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir formulário ↗",
+        "favorito": False,
+    },
+
+    {
+        "categoria": "Formulários",
+        "nome": "Pesquisa",
+        "descricao": "Pesquisa de satisfação.",
+        "icone": "📝",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir formulário ↗",
+        "favorito": False,
+    },
+
+
+    # ======================================================
+    # SISTEMAS
+    # ======================================================
+
+    {
+        "categoria": "Sistemas",
+        "nome": "Sistema de Chamados",
+        "descricao": "Acesso ao sistema de chamados.",
+        "icone": "🖥️",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir sistema ↗",
+        "favorito": True,
+    },
+
+    {
+        "categoria": "Sistemas",
+        "nome": "Portal Corporativo",
+        "descricao": "Acesso ao portal corporativo.",
+        "icone": "🌐",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir sistema ↗",
+        "favorito": False,
+    },
+
+
+    # ======================================================
+    # DOCUMENTAÇÃO
+    # ======================================================
+
+    {
+        "categoria": "Documentação",
+        "nome": "Base de Conhecimento",
+        "descricao": "Manuais e procedimentos do ServiceDesk.",
+        "icone": "📚",
+        "url": "COLOQUE_AQUI_A_URL",
+        "tipo_botao": "Abrir documentação ↗",
+        "favorito": False,
+    },
+
+]
+
+
+# ==========================================================
+# FUNÇÃO PARA NORMALIZAR TEXTO
+# ==========================================================
+#
+# Usada pela busca.
+#
+# Exemplo:
+#
+# "Controle de Atendimentos"
+#
+# pode ser encontrado digitando:
+#
+# "controle"
+# "atendimento"
+# "ATENDIMENTO"
+#
+# ==========================================================
+
+def normalizar(texto):
+
+    return texto.lower().strip()
+
+
+# ==========================================================
+# FUNÇÃO PARA MOSTRAR UM LINK
+# ==========================================================
+#
+# Essa função cria:
+#
+# 📊 Nome
+#
+# Descrição
+#
+# [ Abrir ↗ ]
+#
+# Mantendo o tamanho dos textos alinhado.
+# ==========================================================
+
+def mostrar_link(link, indice):
+
+    # ------------------------------------------------------
+    # TÍTULO
+    # ------------------------------------------------------
+
+    st.markdown(
+        f"""
+        <div class="link-titulo">
+            {link["icone"]} {link["nome"]}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ------------------------------------------------------
+    # DESCRIÇÃO
+    # ------------------------------------------------------
+
+    st.markdown(
+        f"""
+        <div class="link-descricao">
+            {link["descricao"]}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ------------------------------------------------------
+    # BOTÃO
+    # ------------------------------------------------------
+
+    st.link_button(
+        link["tipo_botao"],
+        link["url"],
+        use_container_width=True
+    )
+
+
+# ==========================================================
 # FUNÇÃO PRINCIPAL
 # ==========================================================
 
 def render():
 
-    # ==========================================================
+
+    # ======================================================
     # CSS
-    # ==========================================================
+    # ======================================================
+
+    st.markdown(
+        """
+        <style>
+
+        /* ==================================================
+           TÍTULO DOS LINKS
+           ================================================== */
+
+        .link-titulo {
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #ffffff;
+
+            line-height: 24px;
+
+        }
+
+
+        /* ==================================================
+           DESCRIÇÃO DOS LINKS
+           ================================================== */
+
+        .link-descricao {
+
+            height: 55px;
+
+            color: #9ca3af;
+
+            font-size: 13px;
+
+            line-height: 19px;
+
+        }
+
+
+        /* ==================================================
+           ESPAÇAMENTO ENTRE OS BOTÕES
+           ================================================== */
+
+        div.stLinkButton {
+
+            margin-top: 5px;
+
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ======================================================
+    # TÍTULO
+    # ======================================================
+
+    st.title("📑 Links úteis")
+
+    st.caption(
+        "Acesso rápido às ferramentas utilizadas pelo ServiceDesk."
+    )
+
+
+    # ======================================================
+    # CAMPO DE BUSCA
+    # ======================================================
     #
-    # Aqui alteramos somente a aparência dos componentes.
+    # O usuário pode pesquisar:
     #
-    # IMPORTANTE:
-    # Não estamos colocando HTML dos cards aqui.
-    # Os textos serão criados usando st.markdown(),
-    # st.caption() e st.link_button().
-    # ==========================================================
+    # Controle
+    # Kanban
+    # Escala
+    # Chamados
+    # etc.
+    #
+    # ======================================================
 
-    st.markdown("""
-    <style>
-
-    /* ======================================================
-       TÍTULO DOS CARDS
-       ====================================================== */
-
-    .link-titulo {
-        height: 55px;
-        display: flex;
-        align-items: flex-start;
-        font-size: 18px;
-        font-weight: 600;
-        color: #ffffff;
-        line-height: 24px;
-    }
+    busca = st.text_input(
+        "🔎 Pesquisar links",
+        placeholder="Digite o nome do link, sistema, planilha ou formulário...",
+        key="busca_links"
+    )
 
 
-    /* ======================================================
-       DESCRIÇÃO DOS CARDS
-       ====================================================== */
+    # ======================================================
+    # FILTRAR LINKS
+    # ======================================================
 
-    .link-descricao {
-        height: 55px;
-        color: #9ca3af;
-        font-size: 13px;
-        line-height: 19px;
-    }
+    if busca:
+
+        termo = normalizar(busca)
+
+        links_filtrados = [
+
+            link
+
+            for link in LINKS
+
+            if (
+                termo in normalizar(link["nome"])
+                or termo in normalizar(link["descricao"])
+                or termo in normalizar(link["categoria"])
+            )
+
+        ]
+
+    else:
+
+        links_filtrados = LINKS
 
 
-    /* ======================================================
-       ESPAÇAMENTO DOS BOTÕES
-       ====================================================== */
+    # ======================================================
+    # FAVORITOS
+    # ======================================================
+    #
+    # Só mostramos favoritos quando o usuário não está
+    # pesquisando.
+    #
+    # Isso mantém a tela organizada.
+    #
+    # ======================================================
 
-    div.stLinkButton {
-        margin-top: 5px;
-    }
+    favoritos = [
 
-    </style>
-    """, unsafe_allow_html=True)
+        link
+
+        for link in LINKS
+
+        if link["favorito"]
+
+    ]
 
 
+    if not busca and favoritos:
 
-    # ==========================================================
-    # ==========================================================
+        st.subheader("⭐ Favoritos")
+
+        st.caption(
+            "Links mais utilizados no dia a dia."
+        )
+
+
+        # --------------------------------------------------
+        # QUANTIDADE DE COLUNAS
+        # --------------------------------------------------
+
+        colunas_favoritos = st.columns(3)
+
+
+        # --------------------------------------------------
+        # MOSTRA FAVORITOS
+        # --------------------------------------------------
+
+        for indice, link in enumerate(favoritos):
+
+            coluna = colunas_favoritos[
+                indice % 3
+            ]
+
+            with coluna:
+
+                mostrar_link(
+                    link,
+                    f"favorito_{indice}"
+                )
+
+
+        st.divider()
+
+
+    # ======================================================
+    # CASO A BUSCA NÃO ENCONTRE NADA
+    # ======================================================
+
+    if busca and not links_filtrados:
+
+        st.warning(
+            f'Nenhum link encontrado para "{busca}".'
+        )
+
+        return
+
+
+    # ======================================================
+    # MOSTRAR RESULTADO DA BUSCA
+    # ======================================================
+
+    if busca:
+
+        st.subheader("🔎 Resultados")
+
+        st.caption(
+            f"{len(links_filtrados)} link(s) encontrado(s)."
+        )
+
+
+        # --------------------------------------------------
+        # RESULTADOS EM 3 COLUNAS
+        # --------------------------------------------------
+
+        colunas = st.columns(3)
+
+
+        for indice, link in enumerate(
+            links_filtrados
+        ):
+
+            coluna = colunas[
+                indice % 3
+            ]
+
+            with coluna:
+
+                mostrar_link(
+                    link,
+                    f"busca_{indice}"
+                )
+
+
+        return
+
+
+    # ======================================================
     # PLANILHAS
-    # ==========================================================
-    # ==========================================================
+    # ======================================================
 
-    st.subheader("📊 Planilhas")
+    planilhas = [
 
+        link
 
-    # ----------------------------------------------------------
-    # CRIA AS 3 COLUNAS
-    # ----------------------------------------------------------
+        for link in LINKS
 
-    col1, col2, col3 = st.columns(3)
+        if link["categoria"] == "Planilhas"
 
-
-    # ==========================================================
-    # COLUNA 1
-    # CONTROLE DE ATENDIMENTOS
-    # ==========================================================
-
-    with col1:
-
-        # ------------------------------------------------------
-        # TÍTULO
-        # ------------------------------------------------------
-
-        st.markdown(
-            '<div class="link-titulo">'
-            '📊 Controle de Atendimentos'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        # ------------------------------------------------------
-        # DESCRIÇÃO
-        # ------------------------------------------------------
-
-        st.markdown(
-            '<div class="link-descricao">'
-            'Acompanhamento dos atendimentos do ServiceDesk.'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        # ------------------------------------------------------
-        # BOTÃO
-        # ------------------------------------------------------
-
-        st.link_button(
-            "Abrir planilha ↗",
-            "https://docs.google.com/spreadsheets/d/1Bu53-IPht9-Z4bn1bfXXMBHVeM2sOTQ_NQ3YjyUBF94/edit?gid=1048802781#gid=1048802781",
-            use_container_width=True
-        )
+    ]
 
 
-    # ==========================================================
-    # COLUNA 2
-    # ESCALA
-    # ==========================================================
+    if planilhas:
 
-    with col2:
-
-        st.markdown(
-            '<div class="link-titulo">'
-            '📊 Escala'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            '<div class="link-descricao">'
-            'Planilha de escala da equipe.'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.link_button(
-            "Abrir planilha ↗",
-            "COLOQUE_AQUI_A_URL",
-            use_container_width=True
-        )
+        st.subheader("📊 Planilhas")
 
 
-    # ==========================================================
-    # COLUNA 3
-    # INDICADORES
-    # ==========================================================
-
-    with col3:
-
-        st.markdown(
-            '<div class="link-titulo">'
-            '📊 Indicadores'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            '<div class="link-descricao">'
-            'Indicadores e acompanhamento.'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.link_button(
-            "Abrir planilha ↗",
-            "COLOQUE_AQUI_A_URL",
-            use_container_width=True
-        )
+        colunas = st.columns(3)
 
 
-    # ==========================================================
-    # SEPARADOR
-    # ==========================================================
+        for indice, link in enumerate(
+            planilhas
+        ):
 
-    st.divider()
+            coluna = colunas[
+                indice % 3
+            ]
+
+            with coluna:
+
+                mostrar_link(
+                    link,
+                    f"planilha_{indice}"
+                )
 
 
-    # ==========================================================
-    # ==========================================================
+    # ======================================================
     # FORMULÁRIOS
-    # ==========================================================
-    # ==========================================================
+    # ======================================================
 
-    st.subheader("📝 Formulários")
+    formularios = [
 
+        link
 
-    # ----------------------------------------------------------
-    # CRIA NOVAMENTE 3 COLUNAS
-    # ----------------------------------------------------------
+        for link in LINKS
 
-    col1, col2, col3 = st.columns(3)
+        if link["categoria"] == "Formulários"
 
-
-    # ==========================================================
-    # COLUNA 1
-    # form tarefas kanban.
-    # ==========================================================
-
-    with col1:
-
-        st.markdown(
-            '<div class="link-titulo">'
-            '📝 Formulario Kanban'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            '<div class="link-descricao">'
-            'Formulário para abertura de solicitações.'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.link_button(
-            "Abrir formulário ↗",
-            "https://form.jotform.com/230283726737663",
-            use_container_width=True
-        )
+    ]
 
 
-    # ==========================================================
-    # COLUNA 2
-    # ATENDIMENTO
-    # ==========================================================
+    if formularios:
 
-    with col2:
+        st.divider()
 
-        st.markdown(
-            '<div class="link-titulo">'
-            '📝 Atendimento'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            '<div class="link-descricao">'
-            'Formulário de registro de atendimento.'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.link_button(
-            "Abrir formulário ↗",
-            "COLOQUE_AQUI_A_URL",
-            use_container_width=True
-        )
+        st.subheader("📝 Formulários")
 
 
-    # ==========================================================
-    # COLUNA 3
-    # PESQUISA
-    # ==========================================================
+        colunas = st.columns(3)
 
-    with col3:
 
-        st.markdown(
-            '<div class="link-titulo">'
-            '📝 Pesquisa'
-            '</div>',
-            unsafe_allow_html=True
-        )
+        for indice, link in enumerate(
+            formularios
+        ):
 
-        st.markdown(
-            '<div class="link-descricao">'
-            'Pesquisa de satisfação.'
-            '</div>',
-            unsafe_allow_html=True
-        )
+            coluna = colunas[
+                indice % 3
+            ]
 
-        st.link_button(
-            "Abrir formulário ↗",
-            "COLOQUE_AQUI_A_URL",
-            use_container_width=True
-        )
+            with coluna:
+
+                mostrar_link(
+                    link,
+                    f"formulario_{indice}"
+                )
+
+
+    # ======================================================
+    # SISTEMAS
+    # ======================================================
+
+    sistemas = [
+
+        link
+
+        for link in LINKS
+
+        if link["categoria"] == "Sistemas"
+
+    ]
+
+
+    if sistemas:
+
+        st.divider()
+
+        st.subheader("🌐 Sistemas")
+
+
+        colunas = st.columns(3)
+
+
+        for indice, link in enumerate(
+            sistemas
+        ):
+
+            coluna = colunas[
+                indice % 3
+            ]
+
+            with coluna:
+
+                mostrar_link(
+                    link,
+                    f"sistema_{indice}"
+                )
+
+
+    # ======================================================
+    # DOCUMENTAÇÃO
+    # ======================================================
+
+    documentacao = [
+
+        link
+
+        for link in LINKS
+
+        if link["categoria"] == "Documentação"
+
+    ]
+
+
+    if documentacao:
+
+        st.divider()
+
+        st.subheader("📚 Documentação")
+
+
+        colunas = st.columns(3)
+
+
+        for indice, link in enumerate(
+            documentacao
+        ):
+
+            coluna = colunas[
+                indice % 3
+            ]
+
+            with coluna:
+
+                mostrar_link(
+                    link,
+                    f"documentacao_{indice}"
+                )
