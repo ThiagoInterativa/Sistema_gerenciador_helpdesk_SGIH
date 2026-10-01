@@ -76,7 +76,7 @@ LINKS = [
         "favorito": False,
     },
 
-    
+
     # ======================================================
     # SISTEMAS
     # ======================================================
@@ -124,6 +124,7 @@ LINKS = [
 # ==========================================================
 
 def normalizar(texto):
+
     return texto.lower().strip()
 
 
@@ -133,7 +134,10 @@ def normalizar(texto):
 
 def mostrar_link(link):
 
-    # Título
+    # ------------------------------------------------------
+    # TÍTULO
+    # ------------------------------------------------------
+
     st.markdown(
         f"""
         <div class="link-titulo">
@@ -143,7 +147,11 @@ def mostrar_link(link):
         unsafe_allow_html=True
     )
 
-    # Descrição
+
+    # ------------------------------------------------------
+    # DESCRIÇÃO
+    # ------------------------------------------------------
+
     st.markdown(
         f"""
         <div class="link-descricao">
@@ -153,7 +161,11 @@ def mostrar_link(link):
         unsafe_allow_html=True
     )
 
-    # Botão
+
+    # ------------------------------------------------------
+    # BOTÃO
+    # ------------------------------------------------------
+
     st.link_button(
         link["tipo_botao"],
         link["url"],
@@ -162,20 +174,121 @@ def mostrar_link(link):
 
 
 # ==========================================================
-# MOSTRAR VÁRIOS LINKS EM 3 COLUNAS
+# MOSTRAR LINKS EM 4 COLUNAS
+# ==========================================================
+#
+# Esta é a principal mudança do layout.
+#
+# Antes:
+#
+#     3 colunas
+#
+# Agora:
+#
+#     Planilhas | Formulários | Sistemas | Documentação
+#
 # ==========================================================
 
-def mostrar_links_em_colunas(lista_links):
+def mostrar_categorias_em_colunas(
+    planilhas,
+    formularios,
+    sistemas,
+    documentacao
+):
 
-    colunas = st.columns(3)
+    # ------------------------------------------------------
+    # CRIA AS 4 COLUNAS
+    # ------------------------------------------------------
 
-    for indice, link in enumerate(lista_links):
+    col1, col2, col3, col4 = st.columns(4)
 
-        coluna = colunas[indice % 3]
 
-        with coluna:
+    # ======================================================
+    # COLUNA 1 - PLANILHAS
+    # ======================================================
+
+    with col1:
+
+        st.markdown(
+            "### 📊 Planilhas"
+        )
+
+        st.divider()
+
+        for link in planilhas:
 
             mostrar_link(link)
+
+            st.markdown(
+                "<div class='espaco-link'></div>",
+                unsafe_allow_html=True
+            )
+
+
+    # ======================================================
+    # COLUNA 2 - FORMULÁRIOS
+    # ======================================================
+
+    with col2:
+
+        st.markdown(
+            "### 📝 Formulários"
+        )
+
+        st.divider()
+
+        for link in formularios:
+
+            mostrar_link(link)
+
+            st.markdown(
+                "<div class='espaco-link'></div>",
+                unsafe_allow_html=True
+            )
+
+
+    # ======================================================
+    # COLUNA 3 - SISTEMAS
+    # ======================================================
+
+    with col3:
+
+        st.markdown(
+            "### 🌐 Sistemas"
+        )
+
+        st.divider()
+
+        for link in sistemas:
+
+            mostrar_link(link)
+
+            st.markdown(
+                "<div class='espaco-link'></div>",
+                unsafe_allow_html=True
+            )
+
+
+    # ======================================================
+    # COLUNA 4 - DOCUMENTAÇÃO
+    # ======================================================
+
+    with col4:
+
+        st.markdown(
+            "### 📚 Documentação"
+        )
+
+        st.divider()
+
+        for link in documentacao:
+
+            mostrar_link(link)
+
+            st.markdown(
+                "<div class='espaco-link'></div>",
+                unsafe_allow_html=True
+            )
 
 
 # ==========================================================
@@ -183,6 +296,7 @@ def mostrar_links_em_colunas(lista_links):
 # ==========================================================
 
 def render():
+
 
     # ======================================================
     # CSS
@@ -192,41 +306,77 @@ def render():
         """
         <style>
 
+        /* ==================================================
+           TÍTULO DO LINK
+           ================================================== */
+
         .link-titulo {
 
-            height: 55px;
+            min-height: 45px;
 
             display: flex;
 
             align-items: flex-start;
 
-            font-size: 18px;
+            font-size: 16px;
 
             font-weight: 600;
 
             color: #ffffff;
 
-            line-height: 24px;
+            line-height: 22px;
 
         }
 
+
+        /* ==================================================
+           DESCRIÇÃO
+           ================================================== */
 
         .link-descricao {
 
-            height: 55px;
+            min-height: 50px;
 
             color: #9ca3af;
 
-            font-size: 13px;
+            font-size: 12px;
 
-            line-height: 19px;
+            line-height: 18px;
+
+            margin-bottom: 5px;
 
         }
 
 
+        /* ==================================================
+           ESPAÇO ENTRE OS LINKS
+           ================================================== */
+
+        .espaco-link {
+
+            height: 22px;
+
+        }
+
+
+        /* ==================================================
+           BOTÕES
+           ================================================== */
+
         div.stLinkButton {
 
-            margin-top: 5px;
+            margin-top: 4px;
+
+        }
+
+
+        /* ==================================================
+           TÍTULOS DAS CATEGORIAS
+           ================================================== */
+
+        h3 {
+
+            margin-bottom: 0px;
 
         }
 
@@ -260,11 +410,25 @@ def render():
 
         links_filtrados = []
 
+
+        # --------------------------------------------------
+        # PROCURA EM TODOS OS LINKS
+        # --------------------------------------------------
+
         for link in LINKS:
 
-            nome = normalizar(link["nome"])
-            descricao = normalizar(link["descricao"])
-            categoria = normalizar(link["categoria"])
+            nome = normalizar(
+                link["nome"]
+            )
+
+            descricao = normalizar(
+                link["descricao"]
+            )
+
+            categoria = normalizar(
+                link["categoria"]
+            )
+
 
             if (
                 termo in nome
@@ -298,12 +462,28 @@ def render():
             f"{len(links_filtrados)} link(s) encontrado(s)."
         )
 
-        mostrar_links_em_colunas(
+
+        # --------------------------------------------------
+        # RESULTADOS EM 4 COLUNAS
+        # --------------------------------------------------
+
+        colunas = st.columns(4)
+
+
+        for indice, link in enumerate(
             links_filtrados
-        )
+        ):
+
+            coluna = colunas[
+                indice % 4
+            ]
+
+            with coluna:
+
+                mostrar_link(link)
+
 
         return
-
 
 
     # ======================================================
@@ -314,10 +494,17 @@ def render():
 
 
     # ======================================================
-    # PLANILHAS
+    # SEPARAR OS LINKS POR CATEGORIA
     # ======================================================
 
     planilhas = []
+
+    formularios = []
+
+    sistemas = []
+
+    documentacao = []
+
 
     for link in LINKS:
 
@@ -325,98 +512,26 @@ def render():
 
             planilhas.append(link)
 
-
-    if planilhas:
-
-        st.subheader("📊 Planilhas")
-
-        mostrar_links_em_colunas(
-            planilhas
-        )
-
-
-    # ======================================================
-    # SEPARADOR
-    # ======================================================
-
-    st.divider()
-
-
-    # ======================================================
-    # FORMULÁRIOS
-    # ======================================================
-
-    formularios = []
-
-    for link in LINKS:
-
-        if link["categoria"] == "Formulários":
+        elif link["categoria"] == "Formulários":
 
             formularios.append(link)
 
-
-    if formularios:
-
-        st.subheader("📝 Formulários")
-
-        mostrar_links_em_colunas(
-            formularios
-        )
-
-
-    # ======================================================
-    # SEPARADOR
-    # ======================================================
-
-    st.divider()
-
-
-    # ======================================================
-    # SISTEMAS
-    # ======================================================
-
-    sistemas = []
-
-    for link in LINKS:
-
-        if link["categoria"] == "Sistemas":
+        elif link["categoria"] == "Sistemas":
 
             sistemas.append(link)
 
-
-    if sistemas:
-
-        st.subheader("🌐 Sistemas")
-
-        mostrar_links_em_colunas(
-            sistemas
-        )
-
-
-    # ======================================================
-    # SEPARADOR
-    # ======================================================
-
-    st.divider()
-
-
-    # ======================================================
-    # DOCUMENTAÇÃO
-    # ======================================================
-
-    documentacao = []
-
-    for link in LINKS:
-
-        if link["categoria"] == "Documentação":
+        elif link["categoria"] == "Documentação":
 
             documentacao.append(link)
 
 
-    if documentacao:
+    # ======================================================
+    # MOSTRAR AS 4 CATEGORIAS LADO A LADO
+    # ======================================================
 
-        st.subheader("📚 Documentação")
-
-        mostrar_links_em_colunas(
-            documentacao
-        )
+    mostrar_categorias_em_colunas(
+        planilhas,
+        formularios,
+        sistemas,
+        documentacao
+    )
