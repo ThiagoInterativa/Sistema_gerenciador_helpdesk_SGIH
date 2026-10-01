@@ -131,8 +131,30 @@ def normalizar(texto):
 # ==========================================================
 # MOSTRAR UM LINK
 # ==========================================================
+#
+# Cada link possui uma estrutura fixa:
+#
+# ┌──────────────────────────┐
+# │ 📊 Nome                  │ ← altura fixa
+# │ Descrição                │ ← altura fixa
+# │                          │
+# │ [      Abrir ↗       ]   │ ← botão
+# └──────────────────────────┘
+#
+# Isso mantém todos os elementos alinhados.
+# ==========================================================
 
 def mostrar_link(link):
+
+    # ------------------------------------------------------
+    # CONTAINER DO LINK
+    # ------------------------------------------------------
+
+    st.markdown(
+        '<div class="link-card">',
+        unsafe_allow_html=True
+    )
+
 
     # ------------------------------------------------------
     # TÍTULO
@@ -173,122 +195,25 @@ def mostrar_link(link):
     )
 
 
-# ==========================================================
-# MOSTRAR LINKS EM 4 COLUNAS
-# ==========================================================
-#
-# Esta é a principal mudança do layout.
-#
-# Antes:
-#
-#     3 colunas
-#
-# Agora:
-#
-#     Planilhas | Formulários | Sistemas | Documentação
-#
-# ==========================================================
-
-def mostrar_categorias_em_colunas(
-    planilhas,
-    formularios,
-    sistemas,
-    documentacao
-):
-
     # ------------------------------------------------------
-    # CRIA AS 4 COLUNAS
+    # FECHA CONTAINER
     # ------------------------------------------------------
 
-    col1, col2, col3, col4 = st.columns(4)
+    st.markdown(
+        '</div>',
+        unsafe_allow_html=True
+    )
 
 
-    # ======================================================
-    # COLUNA 1 - PLANILHAS
-    # ======================================================
+# ==========================================================
+# MOSTRAR LINKS DE UMA CATEGORIA
+# ==========================================================
 
-    with col1:
+def mostrar_links_categoria(lista_links):
 
-        st.markdown(
-            "### 📊 Planilhas"
-        )
+    for link in lista_links:
 
-        st.divider()
-
-        for link in planilhas:
-
-            mostrar_link(link)
-
-            st.markdown(
-                "<div class='espaco-link'></div>",
-                unsafe_allow_html=True
-            )
-
-
-    # ======================================================
-    # COLUNA 2 - FORMULÁRIOS
-    # ======================================================
-
-    with col2:
-
-        st.markdown(
-            "### 📝 Formulários"
-        )
-
-        st.divider()
-
-        for link in formularios:
-
-            mostrar_link(link)
-
-            st.markdown(
-                "<div class='espaco-link'></div>",
-                unsafe_allow_html=True
-            )
-
-
-    # ======================================================
-    # COLUNA 3 - SISTEMAS
-    # ======================================================
-
-    with col3:
-
-        st.markdown(
-            "### 🌐 Sistemas"
-        )
-
-        st.divider()
-
-        for link in sistemas:
-
-            mostrar_link(link)
-
-            st.markdown(
-                "<div class='espaco-link'></div>",
-                unsafe_allow_html=True
-            )
-
-
-    # ======================================================
-    # COLUNA 4 - DOCUMENTAÇÃO
-    # ======================================================
-
-    with col4:
-
-        st.markdown(
-            "### 📚 Documentação"
-        )
-
-        st.divider()
-
-        for link in documentacao:
-
-            mostrar_link(link)
-
-            st.markdown(
-                "<div class='espaco-link'></div>",
-                unsafe_allow_html=True
-            )
+        mostrar_link(link)
 
 
 # ==========================================================
@@ -296,7 +221,6 @@ def mostrar_categorias_em_colunas(
 # ==========================================================
 
 def render():
-
 
     # ======================================================
     # CSS
@@ -307,12 +231,38 @@ def render():
         <style>
 
         /* ==================================================
-           TÍTULO DO LINK
+           CONTAINER DE CADA LINK
            ================================================== */
+
+        .link-card {
+
+            width: 100%;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        /* ==================================================
+           TÍTULO DO LINK
+           ==================================================
+           
+           ALTURA FIXA.
+
+           Isso garante que:
+           
+           "Sistema de Chamados"
+
+           e
+
+           "Base de Conhecimento"
+
+           ocupem exatamente o mesmo espaço.
+        */
 
         .link-titulo {
 
-            min-height: 45px;
+            height: 48px;
 
             display: flex;
 
@@ -326,16 +276,23 @@ def render():
 
             line-height: 22px;
 
+            overflow: hidden;
+
+            padding-right: 5px;
+
         }
 
 
         /* ==================================================
            DESCRIÇÃO
-           ================================================== */
+           ==================================================
+           
+           Também possui altura fixa.
+        */
 
         .link-descricao {
 
-            min-height: 50px;
+            height: 52px;
 
             color: #9ca3af;
 
@@ -343,18 +300,9 @@ def render():
 
             line-height: 18px;
 
-            margin-bottom: 5px;
+            overflow: hidden;
 
-        }
-
-
-        /* ==================================================
-           ESPAÇO ENTRE OS LINKS
-           ================================================== */
-
-        .espaco-link {
-
-            height: 22px;
+            padding-right: 5px;
 
         }
 
@@ -365,7 +313,16 @@ def render():
 
         div.stLinkButton {
 
+            width: 100%;
+
             margin-top: 4px;
+
+        }
+
+
+        div.stLinkButton > a {
+
+            width: 100%;
 
         }
 
@@ -374,11 +331,50 @@ def render():
            TÍTULOS DAS CATEGORIAS
            ================================================== */
 
-        h3 {
+        .categoria-titulo {
 
-            margin-bottom: 0px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #ffffff;
 
         }
+
+
+        /* ==================================================
+           LINHA ABAIXO DA CATEGORIA
+           ================================================== */
+
+        .categoria-linha {
+
+            height: 1px;
+
+            background-color: #374151;
+
+            margin-top: 4px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        /* ==================================================
+           SEPARADOR PRINCIPAL
+           ================================================== */
+
+        hr {
+
+            border-color: #374151;
+
+        }
+
 
         </style>
         """,
@@ -401,7 +397,7 @@ def render():
 
 
     # ======================================================
-    # SE EXISTE BUSCA
+    # BUSCA ATIVA
     # ======================================================
 
     if busca:
@@ -412,7 +408,7 @@ def render():
 
 
         # --------------------------------------------------
-        # PROCURA EM TODOS OS LINKS
+        # PROCURA
         # --------------------------------------------------
 
         for link in LINKS:
@@ -487,14 +483,7 @@ def render():
 
 
     # ======================================================
-    # SEPARADOR
-    # ======================================================
-
-    st.divider()
-
-
-    # ======================================================
-    # SEPARAR OS LINKS POR CATEGORIA
+    # SEPARAR LINKS POR CATEGORIA
     # ======================================================
 
     planilhas = []
@@ -526,12 +515,108 @@ def render():
 
 
     # ======================================================
-    # MOSTRAR AS 4 CATEGORIAS LADO A LADO
+    # LAYOUT PRINCIPAL
+    # ======================================================
+    #
+    # 4 colunas:
+    #
+    # PLANILHAS | FORMULÁRIOS | SISTEMAS | DOCUMENTAÇÃO
+    #
     # ======================================================
 
-    mostrar_categorias_em_colunas(
-        planilhas,
-        formularios,
-        sistemas,
-        documentacao
+    col1, col2, col3, col4 = st.columns(
+        [1, 1, 1, 1],
+        gap="medium"
     )
+
+
+    # ======================================================
+    # COLUNA 1
+    # ======================================================
+
+    with col1:
+
+        st.markdown(
+            """
+            <div class="categoria-titulo">
+                📊 Planilhas
+            </div>
+
+            <div class="categoria-linha"></div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+        mostrar_links_categoria(
+            planilhas
+        )
+
+
+    # ======================================================
+    # COLUNA 2
+    # ======================================================
+
+    with col2:
+
+        st.markdown(
+            """
+            <div class="categoria-titulo">
+                📝 Formulários
+            </div>
+
+            <div class="categoria-linha"></div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+        mostrar_links_categoria(
+            formularios
+        )
+
+
+    # ======================================================
+    # COLUNA 3
+    # ======================================================
+
+    with col3:
+
+        st.markdown(
+            """
+            <div class="categoria-titulo">
+                🌐 Sistemas
+            </div>
+
+            <div class="categoria-linha"></div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+        mostrar_links_categoria(
+            sistemas
+        )
+
+
+    # ======================================================
+    # COLUNA 4
+    # ======================================================
+
+    with col4:
+
+        st.markdown(
+            """
+            <div class="categoria-titulo">
+                📚 Documentação
+            </div>
+
+            <div class="categoria-linha"></div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+        mostrar_links_categoria(
+            documentacao
+        )
