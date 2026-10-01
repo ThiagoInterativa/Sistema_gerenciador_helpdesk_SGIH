@@ -376,12 +376,6 @@ def render():
 
     if not busca and favoritos:
 
-        st.subheader("⭐ Favoritos")
-
-        st.caption(
-            "Links mais utilizados no dia a dia."
-        )
-
 
         # --------------------------------------------------
         # QUANTIDADE DE COLUNAS
