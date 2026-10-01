@@ -3,12 +3,7 @@ import streamlit as st
 
 def render():
 
-    st.title("📑 Links úteis")
-
-    st.caption(
-        "Acesso rápido às ferramentas utilizadas pelo ServiceDesk"
-    )
-
+  
     # ==========================================================
     # PLANILHAS
     # ==========================================================
