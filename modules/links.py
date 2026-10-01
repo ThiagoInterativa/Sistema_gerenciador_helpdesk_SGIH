@@ -324,7 +324,7 @@ def render():
         key="busca_links"
     )
 
-]
+
     # ======================================================
     # FILTRAR LINKS
     # ======================================================
@@ -350,33 +350,6 @@ def render():
     else:
 
         links_filtrados = LINKS
-
-
-    # ======================================================
-    # FAVORITOS
-    # ======================================================
-    #
-    # Só mostramos favoritos quando o usuário não está
-    # pesquisando.
-    #
-    # Isso mantém a tela organizada.
-    #
-    # ======================================================
-
-    favoritos = [
-
-        link
-
-        for link in LINKS
-
-        if link["favorito"]
-
-    ]
-
-
-    if not busca and favoritos:
-
-
         # --------------------------------------------------
         # QUANTIDADE DE COLUNAS
         # --------------------------------------------------
@@ -455,6 +428,8 @@ def render():
 
 
         return
+
+st.divider()
 
 
     # ======================================================
