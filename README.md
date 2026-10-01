@@ -1,4 +1,4 @@
 Sistema de Gestão inteligente de ServiceDEsk (SGIH)
 
 
-<img width="1775" height="750" alt="image" src="https://github.com/user-attachments/assets/62dc932e-8d1a-4975-8792-1ccdd20aa717" />
+<img width="1791" height="775" alt="image" src="https://github.com/user-attachments/assets/95ca5bbe-74f5-4087-87cc-0b213f504b17" />
