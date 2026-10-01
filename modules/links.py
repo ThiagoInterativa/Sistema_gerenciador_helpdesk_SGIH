@@ -303,16 +303,6 @@ def render():
     )
 
 
-    # ======================================================
-    # TÍTULO
-    # ======================================================
-
-    st.title("📑 Links úteis")
-
-    st.caption(
-        "Acesso rápido às ferramentas utilizadas pelo ServiceDesk."
-    )
-
 
     # ======================================================
     # CAMPO DE BUSCA
