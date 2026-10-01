@@ -1,141 +1,132 @@
+import streamlit as st
 
-# ==========================================================
-# VISÃO GERAL
-# ==========================================================
 
-if st.session_state.menu == "visao_geral":
+def render():
 
-    from modules import visao_geral
+    # ==========================================================
+    # TÍTULO
+    # ==========================================================
 
-    visao_geral.render(
-        st.session_state.refresh_rate
+    st.title("📈 Relatórios")
+
+    st.caption(
+        "Selecione um relatório para visualizar"
     )
 
 
-# ==========================================================
-# CHAMADAS
-# ==========================================================
+    # ==========================================================
+    # CRIA 3 COLUNAS
+    # ==========================================================
 
-elif st.session_state.menu == "chamadas":
-
-    # ------------------------------------------------------
-    # Se nenhum card foi selecionado
-    # ------------------------------------------------------
-
-    if st.session_state.card is None:
-
-        st.title("📞 Chamadas")
-
-        st.caption(
-            "Selecione um módulo para carregar"
-        )
+    col1, col2, col3 = st.columns(3)
 
 
-        # --------------------------------------------------
-        # CARDS
-        # --------------------------------------------------
+    # ==========================================================
+    # RELATÓRIO 1
+    # ==========================================================
 
-        c1, c2, c3 = st.columns(3)
+    with col1:
 
-
-        # ==================================================
-        # CHAMADA RECUSADA
-        # ==================================================
-
-        with c1:
-
-            st.markdown(
-                "#### 🚫 Chamada Recusada"
-            )
-
-            if st.button(
-                "Abrir",
-                key="card_recusada",
-                use_container_width=True
-            ):
-
-                st.session_state.card = "recusada"
-
-                st.rerun()
-
-
-        # ==================================================
-        # ANÁLISE DE CHAMADAS
-        # ==================================================
-
-        with c2:
-
-            st.markdown(
-                "#### 📊 Análise de Chamadas"
-            )
-
-            job = st.session_state.jobs.get(
-                "analise_chamadas"
-            )
-
-            if (
-                job
-                and job["status"] == "running"
-            ):
-
-                st.caption(
-                    f"🔄 Rodando em segundo plano "
-                    f"({int(job['progresso'] * 100)}%)"
-                )
-
-            elif (
-                job
-                and job["status"] == "done"
-            ):
-
-                st.caption(
-                    "✅ Resultado pronto"
-                )
-
-
-            if st.button(
-                "Abrir",
-                key="card_analise",
-                use_container_width=True
-            ):
-
-                st.session_state.card = "analise"
-
-                st.rerun()
-
-
-        # ==================================================
-        # LIGAÇÃO POR RAMAL
-        # ==================================================
-
-        with c3:
-
-            st.markdown(
-                "#### ☎️ Ligação por Ramal"
-            )
-
-            if st.button(
-                "Abrir",
-                key="card_ramal",
-                use_container_width=True
-            ):
-
-                st.session_state.card = "ramal"
-
-                st.rerun()
-
-
-    # ------------------------------------------------------
-    # CARD FOI SELECIONADO
-    # ------------------------------------------------------
-
-    else:
+        st.markdown("### 📊 Rel 1")
 
         if st.button(
-            "← Voltar para os cards"
+            "Abrir",
+            key="btn_rel1",
+            use_container_width=True
         ):
 
-            st.session_state.card = None
+            st.session_state["relatorio_selecionado"] = "rel1"
 
             st.rerun()
 
+
+    # ==========================================================
+    # RELATÓRIO 2
+    # ==========================================================
+
+    with col2:
+
+        st.markdown("### 📊 Rel 2")
+
+        if st.button(
+            "Abrir",
+            key="btn_rel2",
+            use_container_width=True
+        ):
+
+            st.session_state["relatorio_selecionado"] = "rel2"
+
+            st.rerun()
+
+
+    # ==========================================================
+    # RELATÓRIO 3
+    # ==========================================================
+
+    with col3:
+
+        st.markdown("### 📊 Rel 3")
+
+        if st.button(
+            "Abrir",
+            key="btn_rel3",
+            use_container_width=True
+        ):
+
+            st.session_state["relatorio_selecionado"] = "rel3"
+
+            st.rerun()
+
+
+    # ==========================================================
+    # CONTEÚDO DO RELATÓRIO SELECIONADO
+    # ==========================================================
+
+    relatorio = st.session_state.get(
+        "relatorio_selecionado"
+    )
+
+
+    # ----------------------------------------------------------
+    # RELATÓRIO 1
+    # ----------------------------------------------------------
+
+    if relatorio == "rel1":
+
+        st.divider()
+
+        st.subheader("📊 Relatório 1")
+
+        st.write(
+            "Aqui entrará o conteúdo do Relatório 1."
+        )
+
+
+    # ----------------------------------------------------------
+    # RELATÓRIO 2
+    # ----------------------------------------------------------
+
+    elif relatorio == "rel2":
+
+        st.divider()
+
+        st.subheader("📊 Relatório 2")
+
+        st.write(
+            "Aqui entrará o conteúdo do Relatório 2."
+        )
+
+
+    # ----------------------------------------------------------
+    # RELATÓRIO 3
+    # ----------------------------------------------------------
+
+    elif relatorio == "rel3":
+
+        st.divider()
+
+        st.subheader("📊 Relatório 3")
+
+        st.write(
+            "Aqui entrará o conteúdo do Relatório 3."
+        )
