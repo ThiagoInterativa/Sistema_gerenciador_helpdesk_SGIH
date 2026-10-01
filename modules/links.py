@@ -14,7 +14,7 @@ def render():
 
     with col1:
 
-        st.markdown("### 📊 Controle de atendimentos")
+        st.markdown("### 📊 Contro.Atendimentos")
 
         st.caption(
             "Acompanhamento dos atendimentos do ServiceDesk."
