@@ -76,17 +76,7 @@ LINKS = [
         "favorito": False,
     },
 
-    {
-        "categoria": "Formulários",
-        "nome": "Pesquisa",
-        "descricao": "Pesquisa de satisfação.",
-        "icone": "📝",
-        "url": "COLOQUE_AQUI_A_URL",
-        "tipo_botao": "Abrir formulário ↗",
-        "favorito": False,
-    },
-
-
+    
     # ======================================================
     # SISTEMAS
     # ======================================================
