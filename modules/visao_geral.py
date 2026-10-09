@@ -34,7 +34,7 @@ def _status_pabx_cache(ttl_marker):
 def _status_kanban_cache(ttl_marker):
     # session = login_kanban()
     # return get_tarefas_kanban(session)
-    return [{"titulo": "Configurar VPN cliente X", "coluna": "Em andamento"}]
+    return [{"titulo": "Configurar", "coluna": "Em andamento"}]
 
 
 @st.cache_data(ttl=30, show_spinner=False)
