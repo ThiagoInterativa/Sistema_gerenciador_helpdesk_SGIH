@@ -450,8 +450,8 @@ def render(refresh_rate=30):
                         f"""
                         <div style="
                             white-space: nowrap;
-                            width: 100px;
-                            max-width: 100px;
+                            width: 50px;
+                            max-width: 50px;
                             font-size: 12px;
                             padding: 6px 0;
                             line-height: 1.5;
