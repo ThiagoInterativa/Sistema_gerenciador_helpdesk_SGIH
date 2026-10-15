@@ -174,39 +174,33 @@ with st.sidebar:
 
     st.divider()
 
-
-    # ======================================================
-    # CONFIGURAÇÕES
-    # ======================================================
-
-    if st.session_state.sidebar_expandida:
-
-        with st.expander(
-            "⚙️ Configurações",
-            expanded=False
-        ):
-
-            st.session_state.refresh_rate = st.slider(
-                "Atualização (segundos)",
-                10,
-                300,
-                st.session_state.refresh_rate,
-                5
-            )
-
-    else:
-
-        st.button(
-            "⚙️",
-            key="btn_config_icon",
-            help="Configurações de atualização"
+# ======================================================
+# CONFIGURAÇÕES
+# ======================================================
+if st.session_state.sidebar_expandida:
+    with st.expander(
+        "⚙️ Configurações",
+        expanded=False
+    ):
+        st.session_state.refresh_rate = st.slider(
+            "Atualização (segundos)",
+            10,
+            300,
+            st.session_state.refresh_rate,
+            5
         )
 
-    # Botão de som do Kanban
+        # Botão de som do Kanban (dentro do expander)
         st.markdown("---")
         renderizar_botao_audio()
+else:
+    st.button(
+        "⚙️",
+        key="btn_config_icon",
+        help="Configurações de atualização"
+    )
 
-
+    
     # ======================================================
     # BADGE DE JOBS
     # ======================================================
