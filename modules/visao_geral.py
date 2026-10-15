@@ -537,7 +537,9 @@ def render(refresh_rate=30):
         )
 
         # Botão de ativação do som
-        renderizar_botao_audio()
+     with st.sidebar:
+         st.markdown("### ⚙️ Configurações")
+         renderizar_botao_audio()
 
         # Muda a chave de consulta a cada intervalo.
         ttl_marker = int(time.time() // refresh_rate)
