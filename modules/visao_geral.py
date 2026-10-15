@@ -520,6 +520,13 @@ def render(refresh_rate=30):
     """
     refresh_rate = max(5, min(300, int(refresh_rate)))
 
+    
+        # Configurações e botão de áudio na barra lateral
+        with st.sidebar:
+            st.markdown("### 🔊 Teste Audio")
+            renderizar_botao_audio()
+
+
     # Inicialização de estados
     if "tarefas_kanban" not in st.session_state:
         st.session_state.tarefas_kanban = carregar_tarefas_salvas()
@@ -535,11 +542,6 @@ def render(refresh_rate=30):
         st.caption(
             "Monitoramento do ambiente e ferramentas - Service Desk"
         )
-
-        # Configurações e botão de áudio na barra lateral
-        with st.sidebar:
-            st.markdown("### 🔊 Teste Audio")
-            renderizar_botao_audio()
 
         # Muda a chave de consulta a cada intervalo.
         ttl_marker = int(time.time() // refresh_rate)
