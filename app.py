@@ -202,6 +202,10 @@ with st.sidebar:
             help="Configurações de atualização"
         )
 
+        # Botão de áudio abaixo do campo de atualização,
+        # na mesma barra lateral de configurações.
+        with st.sidebar:
+            renderizar_botao_audio()
 
     # ======================================================
     # BADGE DE JOBS
