@@ -397,7 +397,7 @@ def render(refresh_rate=30):
         # Layout de três colunas.
         # O PABX recebe uma proporção maior.
         col1, col2, col3 = st.columns(
-            [1.5, 1, 1],
+            [1.3, 1, 1],
             gap="medium",
         )
 
