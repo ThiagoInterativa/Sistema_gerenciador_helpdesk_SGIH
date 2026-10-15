@@ -515,31 +515,65 @@ def login_e_get_status_whatsflux():
 # INTERFACE DA VISÃO GERAL
 # ============================================================
 
-    # Inicialização de estados
+# ============================================================
+# INTERFACE DA VISÃO GERAL
+# ============================================================
+def render(refresh_rate=30):
+    """
+    Renderiza o painel de monitoramento do SGIH.
+    Configurações e atualização automática do painel.
+    """
+
+    # Inicialização dos estados
     if "tarefas_kanban" not in st.session_state:
         st.session_state.tarefas_kanban = carregar_tarefas_salvas()
+
     if "play_alert" not in st.session_state:
         st.session_state.play_alert = False
+
     if "session_kanban" not in st.session_state:
         st.session_state.session_kanban = None
 
+    # ========================================================
+    # CONFIGURAÇÕES NA BARRA LATERAL
+    # ========================================================
+    with st.sidebar:
+        st.markdown("### ⚙️ Configurações")
+
+        refresh_rate = st.number_input(
+            "Atualização (segundos)",
+            min_value=5,
+            max_value=300,
+            value=int(
+                st.session_state.get(
+                    "intervalo_atualizacao",
+                    refresh_rate,
+                )
+            ),
+            step=5,
+            key="intervalo_atualizacao",
+        )
+
+    # Garante que o intervalo esteja dentro dos limites.
+    refresh_rate = max(5, min(300, int(refresh_rate)))
+
+    # ========================================================
+    # PAINEL COM ATUALIZAÇÃO AUTOMÁTICA
+    # ========================================================
     @st.fragment(run_every=refresh_rate)
     def painel_monitoramento():
-        # Cabeçalho original do SGIH.
+
         st.title("Visão Geral")
         st.caption(
             "Monitoramento do ambiente e ferramentas - Service Desk"
         )
 
-        # Configurações e botão de áudio na barra lateral
+        # Botão de áudio abaixo do campo de atualização,
+        # na mesma barra lateral de configurações.
         with st.sidebar:
-            st.markdown("### 🔊 Teste Audio")
             renderizar_botao_audio()
 
-        # Muda a chave de consulta a cada intervalo.
-        ttl_marker = int(time.time() // refresh_rate)
-        resultado_pabx = _status_pabx_cache(ttl_marker)
-
+            
         # ---------- KANBAN (real) ----------
         if st.session_state.session_kanban is None:
             st.session_state.session_kanban = login_kanban()
