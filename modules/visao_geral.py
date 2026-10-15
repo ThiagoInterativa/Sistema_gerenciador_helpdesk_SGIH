@@ -469,22 +469,15 @@ def render(refresh_rate=30):
                     )
 
                     # Lista individual dos técnicos.
-# Não exibe técnicos que estejam offline.
-for nome, status in agentes:
+                    for nome, status in agentes:
+                        cor = {
+                            "livre": "🟢",
+                            "ocupado": "🔴",
+                            "pausa": "🟡",
+                            "offline": "⚪",
+                        }.get(status, "⚪")
 
-    # Ignora o técnico se o status for offline.
-    if status == "offline":
-        continue
-
-    # Define a cor correspondente ao status.
-    cor = {
-        "livre": "🟢",
-        "ocupado": "🔴",
-        "pausa": "🟡",
-      }.get(status, "⚪")
-
-    # Exibe somente os técnicos que não estão offline.
-    st.write(f"{cor} {nome} — {status}")
+                        st.write(f"{cor} {nome} — {status}")
 
         # ----------------------------------------------------
         # COLUNA 2 — KANBAN
