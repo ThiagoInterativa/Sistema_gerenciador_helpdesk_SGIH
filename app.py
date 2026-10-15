@@ -12,7 +12,7 @@ Um badge na sidebar mostra o progresso em tempo real.
 
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
-
+from visao_geral import renderizar_botao_audio
 
 # ==========================================================
 # CONFIGURAÇÃO DA PÁGINA
