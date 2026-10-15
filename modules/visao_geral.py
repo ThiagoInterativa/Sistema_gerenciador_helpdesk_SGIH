@@ -451,7 +451,7 @@ def render(refresh_rate=30):
                         <div style="
                             white-space: nowrap;
                             width: 100px;
-                            max-width: none;
+                            max-width: 100px;
                             font-size: 12px;
                             padding: 6px 0;
                             line-height: 1.5;
