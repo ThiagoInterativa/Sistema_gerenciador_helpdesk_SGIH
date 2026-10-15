@@ -510,11 +510,6 @@ def login_e_get_status_whatsflux():
     except Exception as e:
         return f"Erro de Conexão ({str(e)[:30]})", {}
 
-
-# ============================================================
-# INTERFACE DA VISÃO GERAL
-# ============================================================
-
 # ============================================================
 # INTERFACE DA VISÃO GERAL
 # ============================================================
@@ -573,97 +568,114 @@ def render(refresh_rate=30):
         with st.sidebar:
             renderizar_botao_audio()
 
-            
-        # ---------- KANBAN (real) ----------
+        # ----------------------------------------------------
+        # PABX
+        # ----------------------------------------------------
+        ttl_marker = int(time.time() // refresh_rate)
+        resultado_pabx = _status_pabx_cache(ttl_marker)
+
+        # ----------------------------------------------------
+        # KANBAN
+        # ----------------------------------------------------
         if st.session_state.session_kanban is None:
             st.session_state.session_kanban = login_kanban()
+
         atualizar_kanban(st.session_state.session_kanban)
         tarefas_kanban = st.session_state.tarefas_kanban
 
-        # ---------- WHATSFLUX (real) ----------
+        # ----------------------------------------------------
+        # WHATSAPP
+        # ----------------------------------------------------
         status_whats, whatsapp = login_e_get_status_whatsflux()
 
-        # Layout de três colunas.
+        # ----------------------------------------------------
+        # LAYOUT DAS TRÊS COLUNAS
+        # ----------------------------------------------------
         col1, col2, col3 = st.columns(
             [1.3, 1.9, 1],
             gap="medium",
         )
 
-        # ----------------------------------------------------
+        # ====================================================
         # COLUNA 1 — PABX
-        # ----------------------------------------------------
+        # ====================================================
         with col1:
             st.subheader("☎️ Status PABX")
+
             if not resultado_pabx["ok"]:
                 st.error(resultado_pabx["erro"])
+
             else:
                 agentes = resultado_pabx["agentes"]
+
                 if not agentes:
                     st.warning(
                         "Nenhum técnico encontrado na tabela "
                         "retornada pelo PABX."
                     )
+
                 else:
-                    livres = sum(status == "livre" for _, status in agentes)
-                    ocupados = sum(status == "ocupado" for _, status in agentes)
-                    pausas = sum(status == "pausa" for _, status in agentes)
-                    offline = sum(status == "offline" for _, status in agentes)
+                    livres = sum(
+                        status == "livre"
+                        for _, status in agentes
+                    )
+                    ocupados = sum(
+                        status == "ocupado"
+                        for _, status in agentes
+                    )
+                    pausas = sum(
+                        status == "pausa"
+                        for _, status in agentes
+                    )
+                    offline = sum(
+                        status == "offline"
+                        for _, status in agentes
+                    )
 
                     st.markdown(
                         f"""
-                        <div style="
-                            white-space: nowrap;
-                            width: 50px;
-                            max-width: 50px;
-                            font-size: 12px;
-                            padding: 6px 0;
-                            line-height: 1.5;
-                            margin-bottom: 10px;
-                        ">
-                            🟢 {livres} livres
-                            &nbsp;|&nbsp;
-                            🔴 {ocupados} ocupados
-                            &nbsp;|&nbsp;
-                            🟡 {pausas} em pausa
-                            &nbsp;|&nbsp;
-                            ⚪ {offline} offline
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
+                        🟢 {livres} livres  
+                        🔴 {ocupados} ocupados  
+                        🟡 {pausas} em pausa  
+                        ⚪ {offline} offline
+                        """
                     )
 
                     for nome, status in agentes:
-                        if status == "offline":
-                            continue
                         cor = {
                             "livre": "🟢",
                             "ocupado": "🔴",
                             "pausa": "🟡",
                             "offline": "⚪",
                         }.get(status, "⚪")
+
                         st.write(f"{cor} {nome} — {status}")
 
-        # ----------------------------------------------------
+        # ====================================================
         # COLUNA 2 — KANBAN
-        # ----------------------------------------------------
+        # ====================================================
         with col2:
             st.subheader("🗂️ Tarefas Kanban")
+
             if not tarefas_kanban:
                 st.info("Nenhuma tarefa pendente.")
+
             else:
                 for task_id, tarefa in tarefas_kanban.items():
-                    st.write(
-                        f"• {tarefa['titulo']} "
-                        f"({tarefa.get('status', 'Pendente')})"
-                    )
+                    titulo = tarefa.get("titulo", "Sem título")
+                    status = tarefa.get("status", "Pendente")
 
-        # ----------------------------------------------------
-        # COLUNA 3 — WHATSAPP (WhatsFlux)
-        # ----------------------------------------------------
+                    st.write(f"• {titulo} ({status})")
+
+        # ====================================================
+        # COLUNA 3 — WHATSAPP
+        # ====================================================
         with col3:
             st.subheader("💬 WhatsApp")
+
             if status_whats != "OK":
                 st.warning(status_whats)
+
             else:
                 for nome, status in whatsapp.items():
                     cor = "🟢" if status == "online" else "⚪"
@@ -671,3 +683,5 @@ def render(refresh_rate=30):
 
     # Executa o painel com atualização automática.
     painel_monitoramento()
+
+
