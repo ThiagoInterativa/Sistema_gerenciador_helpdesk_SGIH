@@ -520,6 +520,11 @@ def render(refresh_rate=30):
     """
     refresh_rate = max(5, min(300, int(refresh_rate)))
 
+with st.sidebar:
+    st.markdown("### 🔊 Teste Audio")
+    renderizar_botao_audio()
+
+
     # Inicialização de estados
     if "tarefas_kanban" not in st.session_state:
         st.session_state.tarefas_kanban = carregar_tarefas_salvas()
