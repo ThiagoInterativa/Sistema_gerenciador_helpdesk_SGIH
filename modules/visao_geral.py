@@ -515,42 +515,32 @@ def login_e_get_status_whatsflux():
 # INTERFACE DA VISÃO GERAL
 # ============================================================
 def render(refresh_rate=30):
+    """
+    Renderiza o painel de monitoramento.
+    """
     refresh_rate = max(5, min(300, int(refresh_rate)))
 
-    # Inicialização dos estados
+    # Inicialização de estados
     if "tarefas_kanban" not in st.session_state:
         st.session_state.tarefas_kanban = carregar_tarefas_salvas()
-
     if "play_alert" not in st.session_state:
         st.session_state.play_alert = False
-
     if "session_kanban" not in st.session_state:
         st.session_state.session_kanban = None
 
-    # 1. Configurações e áudio ficam fora do fragmento
-    with st.sidebar:
-        st.markdown("### ⚙️ Configurações")
-
-        refresh_rate = st.number_input(
-            "Atualização (segundos)",
-            min_value=5,
-            max_value=300,
-            value=int(refresh_rate),
-            step=5,
-            key="intervalo_atualizacao",
-        )
-
-        renderizar_botao_audio()
-
-    # 2. O fragmento usa o intervalo escolhido
     @st.fragment(run_every=refresh_rate)
     def painel_monitoramento():
+        # Cabeçalho original do SGIH.
         st.title("Visão Geral")
         st.caption(
             "Monitoramento do ambiente e ferramentas - Service Desk"
         )
-        
-     
+
+        # Configurações e botão de áudio na barra lateral
+        with st.sidebar:
+            st.markdown("### 🔊 Teste Audio")
+            renderizar_botao_audio()
+
         # Muda a chave de consulta a cada intervalo.
         ttl_marker = int(time.time() // refresh_rate)
         resultado_pabx = _status_pabx_cache(ttl_marker)
