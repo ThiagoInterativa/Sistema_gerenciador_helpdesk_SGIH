@@ -455,6 +455,7 @@ def render(refresh_rate=30):
                             font-size: 12px;
                             padding: 6px 0;
                             line-height: 1.5;
+                            margin-bottom: 10px;   /* ← aumenta o espaço embaixo */
                         ">
                             🟢 {livres} livres
                             &nbsp;|&nbsp;
