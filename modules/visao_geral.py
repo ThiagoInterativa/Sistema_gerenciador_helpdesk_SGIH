@@ -556,7 +556,7 @@ def render(refresh_rate=30):
 
         # Layout de três colunas.
         col1, col2, col3 = st.columns(
-            [1.2, 1.5, 1],
+            [1.2, 1.7, 1],
             gap="medium",
         )
 
