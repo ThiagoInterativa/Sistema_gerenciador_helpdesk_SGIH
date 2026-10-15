@@ -514,11 +514,6 @@ def login_e_get_status_whatsflux():
 # ============================================================
 # INTERFACE DA VISÃO GERAL
 # ============================================================
-def render(refresh_rate=30):
-    """
-    Renderiza o painel de monitoramento.
-    """
-    refresh_rate = max(5, min(300, int(refresh_rate)))
 
     # Inicialização de estados
     if "tarefas_kanban" not in st.session_state:
