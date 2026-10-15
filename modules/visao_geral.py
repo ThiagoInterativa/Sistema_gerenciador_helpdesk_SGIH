@@ -528,6 +528,11 @@ def render(refresh_rate=30):
     if "session_kanban" not in st.session_state:
         st.session_state.session_kanban = None
 
+            # 1. Configurações e áudio ficam fora do fragmento
+    with st.sidebar:
+        st.markdown("### ⚙️ Configurações")
+        
+
     @st.fragment(run_every=refresh_rate)
     def painel_monitoramento():
         # Cabeçalho original do SGIH.
