@@ -202,6 +202,10 @@ with st.sidebar:
             help="Configurações de atualização"
         )
 
+    # Botão de som do Kanban
+        st.markdown("---")
+        renderizar_botao_audio()
+
 
     # ======================================================
     # BADGE DE JOBS
