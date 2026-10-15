@@ -534,27 +534,27 @@ def render(refresh_rate=30):
                         for _, status in agentes
                     )
 
-                    # Exibe um resumo compacto.
-                    st.caption(
-                        f"🟢 {livres} livres | "
-                        f"🔴 {ocupados} ocupados | "
-                        f"🟡 {pausas} em pausa | "
-                        f"⚪ {offline} offline"
-                    )
-
-                    # Exibe cada técnico no formato original.
-                    for nome, status in agentes:
-
-                        cor = {
-                            "livre": "🟢",
-                            "ocupado": "🔴",
-                            "pausa": "🟡",
-                            "offline": "⚪",
-                        }.get(status, "⚪")
-
-                        st.write(
-                            f"{cor} {nome} — {status}"
-                        )
+                    # O HTML controla a exibição em uma única linha.
+st.markdown(
+    f"""
+    <div style="
+        width: max-content;
+        max-width: none;
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 6px 0;
+    ">
+        🟢 {livres} livres
+        &nbsp;|&nbsp;
+        🔴 {ocupados} ocupados
+        &nbsp;|&nbsp;
+        🟡 {pausas} em pausa
+        &nbsp;|&nbsp;
+        ⚪ {offline} offline
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
         # ====================================================
         # COLUNA 2 — TAREFAS KANBAN
