@@ -538,7 +538,7 @@ def render(refresh_rate=30):
 
         # Configurações e botão de áudio na barra lateral
         with st.sidebar:
-            st.markdown("### ⚙️ Configurações")
+            st.markdown("### 🔊 Teste Audio")
             renderizar_botao_audio()
 
         # Muda a chave de consulta a cada intervalo.
