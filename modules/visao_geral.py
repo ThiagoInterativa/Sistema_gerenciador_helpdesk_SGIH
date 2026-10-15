@@ -510,172 +510,131 @@ def login_e_get_status_whatsflux():
     except Exception as e:
         return f"Erro de Conexão ({str(e)[:30]})", {}
 
+
 # ============================================================
 # INTERFACE DA VISÃO GERAL
 # ============================================================
 def render(refresh_rate=30):
     """
-    Renderiza o painel de monitoramento do SGIH.
-    Configurações e atualização automática do painel.
+    Renderiza o painel de monitoramento.
     """
+    refresh_rate = max(5, min(300, int(refresh_rate)))
 
-    # Inicialização dos estados
+    # Inicialização de estados
     if "tarefas_kanban" not in st.session_state:
         st.session_state.tarefas_kanban = carregar_tarefas_salvas()
-
     if "play_alert" not in st.session_state:
         st.session_state.play_alert = False
-
     if "session_kanban" not in st.session_state:
         st.session_state.session_kanban = None
 
-    # ========================================================
-    # CONFIGURAÇÕES NA BARRA LATERAL
-    # ========================================================
-    with st.sidebar:
-        st.markdown("### ⚙️ Configurações")
-
-        refresh_rate = st.number_input(
-            "Atualização (segundos)",
-            min_value=5,
-            max_value=300,
-            value=int(
-                st.session_state.get(
-                    "intervalo_atualizacao",
-                    refresh_rate,
-                )
-            ),
-            step=5,
-            key="intervalo_atualizacao",
-        )
-
-    # Garante que o intervalo esteja dentro dos limites.
-    refresh_rate = max(5, min(300, int(refresh_rate)))
-
-    # ========================================================
-    # PAINEL COM ATUALIZAÇÃO AUTOMÁTICA
-    # ========================================================
     @st.fragment(run_every=refresh_rate)
     def painel_monitoramento():
-
+        # Cabeçalho original do SGIH.
         st.title("Visão Geral")
         st.caption(
             "Monitoramento do ambiente e ferramentas - Service Desk"
         )
 
-        # Botão de áudio abaixo do campo de atualização,
-        # na mesma barra lateral de configurações.
+        # Configurações e botão de áudio na barra lateral
         with st.sidebar:
+            st.markdown("### 🔊 Teste Audio")
             renderizar_botao_audio()
 
-        # ----------------------------------------------------
-        # PABX
-        # ----------------------------------------------------
+        # Muda a chave de consulta a cada intervalo.
         ttl_marker = int(time.time() // refresh_rate)
         resultado_pabx = _status_pabx_cache(ttl_marker)
 
-        # ----------------------------------------------------
-        # KANBAN
-        # ----------------------------------------------------
+        # ---------- KANBAN (real) ----------
         if st.session_state.session_kanban is None:
             st.session_state.session_kanban = login_kanban()
-
         atualizar_kanban(st.session_state.session_kanban)
         tarefas_kanban = st.session_state.tarefas_kanban
 
-        # ----------------------------------------------------
-        # WHATSAPP
-        # ----------------------------------------------------
+        # ---------- WHATSFLUX (real) ----------
         status_whats, whatsapp = login_e_get_status_whatsflux()
 
-        # ----------------------------------------------------
-        # LAYOUT DAS TRÊS COLUNAS
-        # ----------------------------------------------------
+        # Layout de três colunas.
         col1, col2, col3 = st.columns(
             [1.3, 1.9, 1],
             gap="medium",
         )
 
-        # ====================================================
+        # ----------------------------------------------------
         # COLUNA 1 — PABX
-        # ====================================================
+        # ----------------------------------------------------
         with col1:
             st.subheader("☎️ Status PABX")
-
             if not resultado_pabx["ok"]:
                 st.error(resultado_pabx["erro"])
-
             else:
                 agentes = resultado_pabx["agentes"]
-
                 if not agentes:
                     st.warning(
                         "Nenhum técnico encontrado na tabela "
                         "retornada pelo PABX."
                     )
-
                 else:
-                    livres = sum(
-                        status == "livre"
-                        for _, status in agentes
-                    )
-                    ocupados = sum(
-                        status == "ocupado"
-                        for _, status in agentes
-                    )
-                    pausas = sum(
-                        status == "pausa"
-                        for _, status in agentes
-                    )
-                    offline = sum(
-                        status == "offline"
-                        for _, status in agentes
-                    )
+                    livres = sum(status == "livre" for _, status in agentes)
+                    ocupados = sum(status == "ocupado" for _, status in agentes)
+                    pausas = sum(status == "pausa" for _, status in agentes)
+                    offline = sum(status == "offline" for _, status in agentes)
 
                     st.markdown(
                         f"""
-                        🟢 {livres} livres  
-                        🔴 {ocupados} ocupados  
-                        🟡 {pausas} em pausa  
-                        ⚪ {offline} offline
-                        """
+                        <div style="
+                            white-space: nowrap;
+                            width: 50px;
+                            max-width: 50px;
+                            font-size: 12px;
+                            padding: 6px 0;
+                            line-height: 1.5;
+                            margin-bottom: 10px;
+                        ">
+                            🟢 {livres} livres
+                            &nbsp;|&nbsp;
+                            🔴 {ocupados} ocupados
+                            &nbsp;|&nbsp;
+                            🟡 {pausas} em pausa
+                            &nbsp;|&nbsp;
+                            ⚪ {offline} offline
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
                     )
 
                     for nome, status in agentes:
+                        if status == "offline":
+                            continue
                         cor = {
                             "livre": "🟢",
                             "ocupado": "🔴",
                             "pausa": "🟡",
                             "offline": "⚪",
                         }.get(status, "⚪")
-
                         st.write(f"{cor} {nome} — {status}")
 
-        # ====================================================
+        # ----------------------------------------------------
         # COLUNA 2 — KANBAN
-        # ====================================================
+        # ----------------------------------------------------
         with col2:
             st.subheader("🗂️ Tarefas Kanban")
-
             if not tarefas_kanban:
                 st.info("Nenhuma tarefa pendente.")
-
             else:
                 for task_id, tarefa in tarefas_kanban.items():
-                    titulo = tarefa.get("titulo", "Sem título")
-                    status = tarefa.get("status", "Pendente")
+                    st.write(
+                        f"• {tarefa['titulo']} "
+                        f"({tarefa.get('status', 'Pendente')})"
+                    )
 
-                    st.write(f"• {titulo} ({status})")
-
-        # ====================================================
-        # COLUNA 3 — WHATSAPP
-        # ====================================================
+        # ----------------------------------------------------
+        # COLUNA 3 — WHATSAPP (WhatsFlux)
+        # ----------------------------------------------------
         with col3:
             st.subheader("💬 WhatsApp")
-
             if status_whats != "OK":
                 st.warning(status_whats)
-
             else:
                 for nome, status in whatsapp.items():
                     cor = "🟢" if status == "online" else "⚪"
@@ -683,5 +642,3 @@ def render(refresh_rate=30):
 
     # Executa o painel com atualização automática.
     painel_monitoramento()
-
-
