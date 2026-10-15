@@ -536,11 +536,7 @@ def render(refresh_rate=30):
             "Monitoramento do ambiente e ferramentas - Service Desk"
         )
 
-        # Configurações e botão de áudio na barra lateral
-        with st.sidebar:
-            st.markdown("### 🔊 Teste Audio")
-            renderizar_botao_audio()
-
+        
         # Muda a chave de consulta a cada intervalo.
         ttl_marker = int(time.time() // refresh_rate)
         resultado_pabx = _status_pabx_cache(ttl_marker)
