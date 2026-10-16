@@ -110,7 +110,7 @@ with st.sidebar:
     with col_titulo:
         if st.session_state.sidebar_expandida:
             st.markdown(
-                '<p class="sgih-title">SGIH</p>',
+                '<p class="sgih-title">⚡SGIH</p>',
                 unsafe_allow_html=True
             )
             st.markdown(
